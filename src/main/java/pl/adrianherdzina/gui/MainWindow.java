@@ -55,11 +55,10 @@ public class MainWindow {
 
     private void searchButtonClicked(String textFieldContent) throws MovieNotFoundException {
         if (SearchUtils.isNotEmpty(textFieldContent)) {
-            String replacedString = SearchUtils.replaceSpacesForURI(textFieldContent);
             if (isResultAlreadyPrinted) {
-                movieDetails.updateResultHBox(replacedString);
+                movieDetails.updateResultHBox(textFieldContent);
             } else {
-                searchResultHBox = movieDetails.createResultHBox(replacedString);
+                searchResultHBox = movieDetails.createResultHBox(textFieldContent);
                 mainVBox.getChildren().add(searchResultHBox);
                 isResultAlreadyPrinted = true;
             }

@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import pl.adrianherdzina.exceptions.MovieNotFoundException;
+import pl.adrianherdzina.model.dao.MovieEntity;
 import pl.adrianherdzina.model.dto.MovieData;
 import pl.adrianherdzina.service.DataService;
 import pl.adrianherdzina.utils.SearchUtils;
@@ -64,7 +65,7 @@ public class MovieDetails {
     private HBox ratedHBox;
 
     private DataService dataService;
-    private MovieData movieData;
+    private MovieEntity movieEntity;
 
 
     public MovieDetails() {
@@ -81,14 +82,8 @@ public class MovieDetails {
 
     public HBox createResultHBox(String title) throws MovieNotFoundException {
         dataService.setTitle(title);
-        movieData = dataService.getMovieData();
 
-        if (!movieData.isResponse()) {
-            SearchUtils.showAlert("Error!", null, "Movie \"" + title +
-                    "\" was not found in the database.", Alert.AlertType.ERROR);
-            throw new MovieNotFoundException(title);
-        }
-
+        movieEntity = dataService.getMovieData();
 
         initializeLabels();
         initHBoxesForData();
@@ -123,37 +118,37 @@ public class MovieDetails {
         return hBox;
     }
 
-    public void updateResultHBox(String replacedString) {
-        dataService.setTitle(replacedString);
-        movieData = dataService.getMovieData();
+    public void updateResultHBox(String title) {
+        dataService.setTitle(title);
+        movieEntity = dataService.getMovieData();
         setPosterImage();
         setDataLabels();
     }
 
     public void setDataLabels() {
         initPosterImage();
-        titleDataLabel.setText(movieData.getTitle());
-        yearDataLabel.setText(String.valueOf(movieData.getYear()));
-        releasedDataLabel.setText(movieData.getReleased());
-        runtimeDataLabel.setText(movieData.getRuntime());
-        genreDataLabel.setText(movieData.getGenre());
-        directorDataLabel.setText(movieData.getDirector());
-        actorsDataLabel.setText(movieData.getActors());
-        plotDataLabel.setText(movieData.getPlot());
-        languageDataLabel.setText(movieData.getLanguage());
-        countryDataLabel.setText(movieData.getCountry());
-        ratedDataLabel.setText(movieData.getRated());
-        imdbRatingLabel.setText(String.valueOf(movieData.getImdbRating()));
+        titleDataLabel.setText(movieEntity.getTitle());
+        yearDataLabel.setText(String.valueOf(movieEntity.getYear()));
+        releasedDataLabel.setText(movieEntity.getReleased());
+        runtimeDataLabel.setText(movieEntity.getRuntime());
+        genreDataLabel.setText(movieEntity.getGenre());
+        directorDataLabel.setText(movieEntity.getDirector());
+        actorsDataLabel.setText(movieEntity.getActors());
+        plotDataLabel.setText(movieEntity.getPlot());
+        languageDataLabel.setText(movieEntity.getLanguage());
+        countryDataLabel.setText(movieEntity.getCountry());
+        ratedDataLabel.setText(movieEntity.getRated());
+        imdbRatingLabel.setText(String.valueOf(movieEntity.getImdbRating()));
     }
 
     public void initPosterImage() {
-        image = new Image(movieData.getPosterLink());
+        image = new Image(movieEntity.getPosterLink());
         posterImageView = new ImageView();
         posterImageView.setImage(image);
     }
 
     public void setPosterImage() {
-        image = new Image(movieData.getPosterLink());
+        image = new Image(movieEntity.getPosterLink());
         posterImageView.setImage(image);
     }
 
